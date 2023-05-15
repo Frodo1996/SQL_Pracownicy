@@ -34,7 +34,7 @@ UPDATE pracownicy SET salary = salary * 1.1 WHERE department = 'Scrum Master';
 SELECT * FROM pracownicy WHERE birth_day = (SELECT max(birth_day) FROM pracownicy);
 
 -- Usuwa tabelę pracownik
-DELETE FROM pracownicy;
+DROP TABLE pracownicy;
 
 -- Tworzy tabelę stanowisko (nazwa stanowiska, opis, wypłata na danym stanowisku)
 CREATE TABLE `stanowiska` (
@@ -84,12 +84,15 @@ VALUES (1, 'Jan', 'Kowalski', 1, 1),
        (4, 'Krzysiek', 'Przystarz', 4, 4);
 
 -- Pobiera pełne informacje o pracowniku (imię, nazwisko, adres, stanowisko)
-SELECT first_name, last_name, street_and_number, adresy.city, department_name FROM pracownicy2, adresy, stanowiska
-WHERE pracownicy2.id = '1' limit 1;
+SELECT first_name, last_name, a.street_and_number, a.city, s.department_name 
+FROM pracownicy2 p
+JOIN adresy a ON a.id = p.id
+JOIN stanowiska s ON s.id = p.id
+WHERE p.id = '1';
 
 -- Oblicza sumę wypłat dla wszystkich pracowników w firmie
 
-SELECT SUM(DISTINCT s.salary) AS Suma_wypłat
+SELECT SUM(s.salary) AS Suma_wypłat
 FROM stanowiska s
 JOIN pracownicy2 p ON p.id = s.id;
 
